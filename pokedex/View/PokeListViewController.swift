@@ -42,13 +42,14 @@ extension PokeListViewController: UITableViewDelegate, UITableViewDataSource {
             
             pokemonName.text = pokemon.name
             pokemonHP.progress = Float(pokemon.hp) / 200
+            var damage: Float = 0
+            var weakness: Float = 0
             for i in 0..<pokemon.attacks.count {
-                let damage: Float = Float(pokemon.attacks[i].damage) ?? 0
-                let weakness: Float = Float(pokemon.weaknesses.count * 10)
-                pokemonATK.progress += (damage -  weakness) / 10000
-                print((damage - weakness) / 10000)
-                pokemonWEAK.progress = (weakness / 100)
+                damage += Float(pokemon.attacks[i].damage) ?? 0
+                weakness += Float(pokemon.weaknesses.count * 10)
             }
+            pokemonATK.progress = (damage -  weakness/10) / 100
+            pokemonWEAK.progress = weakness / 100
         }
         return cell
     }

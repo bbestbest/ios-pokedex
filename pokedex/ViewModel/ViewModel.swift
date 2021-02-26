@@ -27,7 +27,7 @@ class ViewModel {
 
     func initNextScreen() -> UIViewController {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PokeListViewController")
-        vc.modalPresentationStyle = .fullScreen
+        vc.modalPresentationStyle = .popover
         return vc
     }
 }
