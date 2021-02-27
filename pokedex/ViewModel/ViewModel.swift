@@ -8,14 +8,9 @@
 import Foundation
 import UIKit
 
-protocol PokedexDelegate {
-    func backFromPokemonList (currentPokemon: Pokedex)
-}
-
 class ViewModel {
-    var isSelectPokemon: Pokedex = Pokedex.init(cards: [])
-    var delegate: PokedexDelegate?
-    
+    private var isNotSelect: Pokedex = Pokedex.init(cards: [])
+
     func getNumberOfPokemon(pokemon: Pokedex) -> Int{
         return pokemon.cards.count
     }
@@ -24,13 +19,18 @@ class ViewModel {
         return pokemon
     }
 
-    func addPokemonToPokedex(currentPokemonList: Pokedex, index: Int) -> Pokedex {
-        var addPokemon = currentPokemonList.cards[index]
-        addPokemon.isSelected = true
-        isSelectPokemon.cards.append(addPokemon)
+    func removePokemonToList(currentPokemonList: Pokedex, index: Int) -> Pokedex {
+        var addPokemon = currentPokemonList
+        addPokemon.cards[index].isSelected = false
+        isNotSelect.cards.append(addPokemon.cards[index])
         var removePokemon = currentPokemonList
         removePokemon.cards.remove(at: index)
         return removePokemon
+    }
+
+    func storePokemon(pokemonList: Pokedex, index: Int) -> Pokedex {
+        isNotSelect.cards.append(contentsOf: pokemonList.cards)
+        return isNotSelect
     }
 
     func initNextScreen() -> UIViewController {

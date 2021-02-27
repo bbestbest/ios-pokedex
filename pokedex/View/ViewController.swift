@@ -8,48 +8,66 @@
 import UIKit
 
 
-class ViewController: UIViewController ,AddPokemonButton {
+import UIKit
+
+class ViewController: UIViewController, PassDatafromPokemonList, RemovePokemonButton {
     private var apiManager = ApiManager()
     private var pokedexVM = ViewModel()
+    private var pokemonVM = PokeListViewModel()
+    private var isNotSelectPokemon: Pokedex = Pokedex.init(cards: [])
     var getCellIndex: IndexPath?
     var pokemonList: Pokedex?
-    
+
     @IBOutlet weak var tableView: UITableView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         apiManager.callingAPIByMoya()
-        
+
+        getDelegate()
     }
-    
-    func onClickAddPokemon (index: Int) {
-        //        pokemonList = pokeListVM.addPokemonToPokedex(currentPokemonList: pokemonList!, index: index)
-        tableView.reloadData()
-    }
+
     @IBAction func nextButton(_ sender: Any) {
         if(apiManager.checkStatus == 200) {
             guard let nextVC = self.pokedexVM.initNextScreen() as? PokeListViewController else {return}
-            nextVC.pokemonList = pokedexVM.getPokemon(pokemon: apiManager.pokemonList!)
-            
+            nextVC.pokeListVM = pokemonVM
+            if(pokemonList?.cards.count == nil || pokemonList?.cards.count == 0) {
+                nextVC.pokemonList = pokedexVM.getPokemon(pokemon: apiManager.pokemonList!)
+            } else if ((pokemonList?.cards.count)! > 0) {
+                nextVC.pokemonList = pokedexVM.getPokemon(pokemon: isNotSelectPokemon)
+            }
             self.present(nextVC, animated: true, completion: nil)
         }
     }
+    func onClickRemovePokemon(index: Int) {
+        pokemonList = pokedexVM.removePokemonToList(currentPokemonList: pokemonList!, index: index)
+        pokemonVM.isSelectPokemon = pokemonList!
+        isNotSelectPokemon =  pokedexVM.storePokemon(pokemonList: pokemonVM.isNotSelectPokemon, index: index)
+        pokemonVM.isNotSelectPokemon = isNotSelectPokemon
+        tableView.reloadData()
+    }
+
 }
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource, PokedexListDelegate {
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    func backFromPokemonList(isSelected: Pokedex) {
+        isNotSelectPokemon = pokemonVM.isNotSelectPokemon
+        pokemonList = pokedexVM.getPokemon(pokemon: isSelected)
+        tableView.reloadData()
+    }
+
+    func getDelegate() {
+        pokemonVM.delegate = self
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return pokemonList?.cards.count ?? 0
-//        return 10
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RemoveButtonCell
         let index = indexPath.row
-        
-        self.tableView.reloadData()
-        
-        let pokeListVM = PokeListViewModel()
-        pokeListVM.delegate = self
 
         if let pokemon = (pokemonList?.cards[index]) {
             if(pokemon.isSelected == true) {
@@ -58,10 +76,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, PokedexLis
                 let pokemonHP = cell.viewWithTag(10) as! UIProgressView
                 let pokemonATK = cell.viewWithTag(9) as! UIProgressView
                 let pokemonWEAK = cell.viewWithTag(8) as! UIProgressView
-                
+
                 pokemonImage.sd_setImage(with: URL(string: pokemon.imageUrl), placeholderImage: UIImage(named: "pokemon.png"))
-                
-                
+
                 pokemonName.text = pokemon.name
                 pokemonHP.progress = Float(pokemon.hp) / 200
                 var damage: Float = 0
@@ -72,21 +89,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, PokedexLis
                 }
                 pokemonATK.progress = (damage -  weakness/10) / 100
                 pokemonWEAK.progress = weakness / 100
-//                cell.cellDelegate = self
-//                cell.index = indexPath
+                cell.cellDelegate = self
+                cell.index = indexPath
             }
         }
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
-    }
-    func backFromPokemonList (currentPokemon: Pokedex) {
-        pokemonList = pokedexVM.getPokemon(pokemon: currentPokemon)
-        print(pokemonList)
-        self.tableView.reloadData()
     }
 }
