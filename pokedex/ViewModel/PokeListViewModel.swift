@@ -7,25 +7,31 @@
 
 import Foundation
 
+protocol PokedexListDelegate {
+    func backFromPokemonList (currentPokemon: Pokedex)
+}
+
 class PokeListViewModel {
+    var isSelectPokemon: Pokedex = Pokedex.init(cards: [])
+    var delegate: PokedexListDelegate?
     
-    var pokemon: Pokedex?
-
     func getNumberOfPokemon(pokemon: Pokedex) -> Int{
-        return pokemon.cards.count ?? 0
+        return pokemon.cards.count
     }
-
+    
     func getPokemon(pokemon: Pokedex, at index: Int) -> Cards? {
-        guard index >= 0, index < pokemon.cards.count ?? 0 else {return nil}
         return pokemon.cards[index]
     }
-
-    func updatePokemon(isSelected: Bool, index: Int) {
-        pokemon?.cards[index].isSelected = isSelected
+    
+    func addPokemonToPokedex(currentPokemonList: Pokedex, index: Int) -> Pokedex {
+        var addPokemon = currentPokemonList.cards[index]
+        addPokemon.isSelected = true
+        isSelectPokemon.cards.append(addPokemon)
+        var removePokemon = currentPokemonList
+        removePokemon.cards.remove(at: index)
+        return removePokemon
     }
-
-//    func verifyBack(name: String, age: String, at index: Int, with currentController: PokeListViewController) {
-//        delegate?.backFromUsers(name: name, age: age, index: index)
-//        currentController.dismiss(animated: true, completion: nil)
-//    }
+    func verifyBack() {
+        delegate?.backFromPokemonList(currentPokemon: isSelectPokemon)
+    }
 }
