@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class ViewModel {
-    private var isNotSelect: Pokedex = Pokedex.init(cards: [])
+    var isNotSelect: Pokedex = Pokedex.init(cards: [])
 
     func getNumberOfPokemon(pokemon: Pokedex) -> Int{
         return pokemon.cards.count
@@ -28,7 +28,7 @@ class ViewModel {
         return removePokemon
     }
 
-    func storePokemon(pokemonList: Pokedex, index: Int) -> Pokedex {
+    func storePokemon(pokemonList: Pokedex) -> Pokedex {
         isNotSelect.cards.append(contentsOf: pokemonList.cards)
         return isNotSelect
     }
