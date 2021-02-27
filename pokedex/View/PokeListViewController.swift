@@ -8,10 +8,11 @@
 import UIKit
 import SDWebImage
 
-class PokeListViewController: UIViewController,  UISearchBarDelegate{
+class PokeListViewController: UIViewController,  UISearchBarDelegate, AddPokemonButton{
     private var apiManager = ApiManager()
     private var pokeListVM = PokeListViewModel()
     var pokemonList: Pokedex!
+    var getCellIndex: IndexPath?
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var nextButton: UIButton!
@@ -30,11 +31,17 @@ class PokeListViewController: UIViewController,  UISearchBarDelegate{
         
     }
 
-    @IBAction func backView(_ sender: Any) {
+    @IBAction func backView(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
+
+    func onClickAddPokemon (index: Int) {
+        pokemonList = pokeListVM!.addPokemonToPokedex(currentPokemonList: pokemonList!, index: index)
+
+        pokeListVM!.verifyBack()
+
+        tableView.reloadData()
+    }
 }
 
 extension PokeListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -103,7 +110,6 @@ extension PokeListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
