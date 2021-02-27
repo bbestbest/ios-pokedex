@@ -43,8 +43,9 @@ class ViewController: UIViewController, PassDatafromPokemonList, RemovePokemonBu
     func onClickRemovePokemon(index: Int) {
         pokemonList = pokedexVM.removePokemonToList(currentPokemonList: pokemonList!, index: index)
         pokemonVM.isSelectPokemon = pokemonList!
-        isNotSelectPokemon =  pokedexVM.storePokemon(pokemonList: pokemonVM.isNotSelectPokemon, index: index)
+        isNotSelectPokemon =  pokedexVM.storePokemon(pokemonList: pokemonVM.isNotSelectPokemon)
         pokemonVM.isNotSelectPokemon = isNotSelectPokemon
+        pokedexVM.isNotSelect.cards = []
         tableView.reloadData()
     }
 
