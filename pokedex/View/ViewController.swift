@@ -1,4 +1,4 @@
-ter//
+//
 //  ViewController.swift
 //  pokedex
 //
