@@ -10,6 +10,10 @@ import Foundation
 class PokeListViewModel {
     
     var pokemon: Pokedex?
+    
+    func getAllPokemon(pokemon: Pokedex) -> Pokedex? {
+        return pokemon
+    }
 
     func getNumberOfPokemon(pokemon: Pokedex) -> Int{
         return pokemon.cards.count ?? 0
