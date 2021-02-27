@@ -1,9 +1,3 @@
-//
-//  SceneDelegate.swift
-//  pokedex
-//
-//  Created by APPMAN M-021 on 2/2/2564 BE.
-//
 
 import UIKit
 

@@ -1,9 +1,4 @@
-//
-//  ViewController.swift
-//  pokedex
-//
-//  Created by APPMAN M-021 on 2/2/2564 BE.
-//
+
 
 import UIKit
 
@@ -12,9 +7,9 @@ import UIKit
 
 class ViewController: UIViewController, PassDatafromPokemonList, RemovePokemonButton {
     private var apiManager = ApiManager()
-    private var pokedexVM = ViewModel()
-    private var pokemonVM = PokeListViewModel()
-    private var isNotSelectPokemon: Pokedex = Pokedex.init(cards: [])
+    var pokedexVM = ViewModel()
+    var pokemonVM = PokeListViewModel()
+    var isNotSelectPokemon: Pokedex = Pokedex.init(cards: [])
     var getCellIndex: IndexPath?
     var pokemonList: Pokedex?
 
@@ -72,6 +67,13 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
         if let pokemon = (pokemonList?.cards[index]) {
             if(pokemon.isSelected == true) {
+                
+                let pokemonStar = cell.viewWithTag(21) as! UIImageView
+                let pokemonStar2 = cell.viewWithTag(22) as! UIImageView
+                let pokemonStar3 = cell.viewWithTag(23) as! UIImageView
+                let pokemonStar4 = cell.viewWithTag(24) as! UIImageView
+                let pokemonStar5 = cell.viewWithTag(25) as! UIImageView
+                
                 let pokemonImage = cell.viewWithTag(1) as! UIImageView
                 let pokemonName = cell.viewWithTag(2) as! UILabel
                 let pokemonHP = cell.viewWithTag(10) as! UIProgressView
@@ -92,6 +94,33 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                 pokemonWEAK.progress = weakness / 100
                 cell.cellDelegate = self
                 cell.index = indexPath
+                
+                switch pokemon.rarity {
+                case 1:
+                    pokemonStar.image = UIImage(named: "starIcon")
+
+                case 2:
+                    pokemonStar.image = UIImage(named: "starIcon")
+                    pokemonStar2.image = UIImage(named: "starIcon")
+
+                case 3:
+                    pokemonStar.image = UIImage(named: "starIcon")
+                    pokemonStar2.image = UIImage(named: "starIcon")
+                    pokemonStar3.image = UIImage(named: "starIcon")
+                case 4:
+                    pokemonStar.image = UIImage(named: "starIcon")
+                    pokemonStar2.image = UIImage(named: "starIcon")
+                    pokemonStar3.image = UIImage(named: "starIcon")
+                    pokemonStar4.image = UIImage(named: "starIcon")
+                case 5:
+                    pokemonStar.image = UIImage(named: "starIcon")
+                    pokemonStar2.image = UIImage(named: "starIcon")
+                    pokemonStar3.image = UIImage(named: "starIcon")
+                    pokemonStar4.image = UIImage(named: "starIcon")
+                    pokemonStar5.image = UIImage(named: "starIcon")
+                default:
+                    print("not found ")
+                }
             }
         }
         return cell

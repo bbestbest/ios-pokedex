@@ -1,9 +1,4 @@
-//
-//  Pokedex.swift
-//  pokedex
-//
-//  Created by APPMAN M-021 on 7/2/2564 BE.
-//
+
 
 import Foundation
 

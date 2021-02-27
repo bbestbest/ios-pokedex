@@ -1,9 +1,4 @@
-//
-//  RemoveButtonCell.swift
-//  pokedex
-//
-//  Created by APPMAN M-021 on 27/2/2564 BE.
-//
+
 
 import Foundation
 import UIKit

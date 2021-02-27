@@ -1,9 +1,3 @@
-//
-//  PokeListViewModel.swift
-//  pokedex
-//
-//  Created by APPMAN M-021 on 23/2/2564 BE.
-//
 
 import Foundation
 import UIKit

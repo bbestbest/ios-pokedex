@@ -1,9 +1,4 @@
-//
-//  ApiManager.swift
-//  pokedex
-//
-//  Created by APPMAN M-021 on 22/2/2564 BE.
-//
+
 
 import Foundation
 import Moya
